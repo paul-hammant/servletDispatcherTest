@@ -6,19 +6,20 @@ mvn clean install
 
 Gets tomcat7 from Apache & unzips.
 
-    get_tomcat_7.sh
+    ./get_tomcat_7.sh
 
 Patches the conf/context.xml file to add crossContext="true" (false is the default):
 
-    patch_contextXml.sh
+    ./patch_contextXml.sh
 
 Copy 'a' and 'b' war files from the maven build above into the apache-tomcat-7.0.41/webapps folder:
 
-    copy_war_files.sh
+    ./copy_war_files.sh
 
-Then cd into apache-tomcat-7.0.41/bin and do:
+Then to run Tomcat:
 
-    ./catalina.sh run
+    cd apache-tomcat-7.0.41/bin
+	./catalina.sh run
 
 ## URLs to test with
 
