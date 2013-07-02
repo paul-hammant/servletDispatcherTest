@@ -41,6 +41,12 @@ Outputs something like:
 
     /b/AServletThatOutputsTheRequestsThreadID: thread = 2065966604
 
+Static Resource [http://localhost:8080/b/foo.txt](http://localhost:8080/b/foo.txt):
+
+Outputs something like:
+
+    /b/foo.txt: contents of static file
+
 ## Cross context tests
 
 Including content from a static resource works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=foo.txt](http://localhost:8080/a/AIncludingContentFromB?bURL=foo.txt) :
@@ -65,3 +71,6 @@ Outputs something like:
 
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 1062493000
     /b/AnotherFilterThatOutputsTheRequestsThreadID: thread = 1062493000
+	
+The important take away is that the servlet container uses the same thread for handing invocation in both contexts.  
+You won't lower your concurrent request capacity by coding something like this, for a single Tomcat. This works in Tomcat 6 & 7 (maybe others). It also works in Jetty 9 (maybe others)
