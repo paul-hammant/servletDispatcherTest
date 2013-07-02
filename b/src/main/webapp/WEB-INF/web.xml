@@ -3,16 +3,28 @@
          xmlns="http://java.sun.com/xml/ns/j2ee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>B Webapp</display-name>
+  <display-name>B Webapp</display-name>
 
-   <filter>
-        <filter-name>bFilter</filter-name>
-        <filter-class>servletDispatcherTest.IAlsoOutputMyThreadID</filter-class>
-    </filter>
+  <servlet>
+    <servlet-name>aServlet</servlet-name>
+    <servlet-class>servletDispatcherTest.AServletThatOutputsTheRequestsThreadID</servlet-class>
+  </servlet>
 
-  	<filter-mapping>
-		<filter-name>bFilter</filter-name>
-        <url-pattern>/IAlsoOutputMyThreadID</url-pattern>
-	</filter-mapping>
+  <servlet-mapping>
+    <servlet-name>aServlet</servlet-name>
+    <url-pattern>/AServletThatOutputsTheRequestsThreadID</url-pattern>
+  </servlet-mapping>
+
+  <filter>
+    <filter-name>bFilter</filter-name>
+    <filter-class>servletDispatcherTest.AnotherFilterThatOutputsTheRequestsThreadID</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>bFilter</filter-name>
+    <url-pattern>/AnotherFilterThatOutputsTheRequestsThreadID</url-pattern>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
 
 </web-app>

@@ -10,19 +10,23 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class AIncludingContentFromB
-        extends IOutputMyThreadID {
+        extends AFilterThatOutputsTheRequestsThreadID {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         super.doFilter(request, response, chain);
 
-        HttpServletRequest servletRequest = (HttpServletRequest) request;
+        String bURL = request.getParameter("bURL");
 
-        ServletContext context = servletRequest.getSession().getServletContext().getContext("/b");
+        if (bURL == null) {
+            response.getWriter().write("** you need to specify a bURL query string parameter **");
 
-        RequestDispatcher requestDispatcher = context.getRequestDispatcher("/IAlsoOutputMyThreadID");
-
-        requestDispatcher.include(request, response);
+        } else {
+            HttpServletRequest servletRequest = (HttpServletRequest) request;
+            ServletContext context = servletRequest.getSession().getServletContext().getContext("/b");
+            RequestDispatcher requestDispatcher = context.getRequestDispatcher("/" + bURL);
+            requestDispatcher.include(request, response);
+        }
 
 
     }

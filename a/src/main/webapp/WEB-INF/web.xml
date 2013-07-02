@@ -7,7 +7,7 @@
 
   <filter>
     <filter-name>aFilter</filter-name>
-    <filter-class>servletDispatcherTest.IOutputMyThreadID</filter-class>
+    <filter-class>servletDispatcherTest.AFilterThatOutputsTheRequestsThreadID</filter-class>
   </filter>
 
   <filter>
@@ -22,7 +22,7 @@
 
   <filter-mapping>
     <filter-name>aFilter</filter-name>
-    <url-pattern>/IOutputMyThreadID</url-pattern>
+    <url-pattern>/AFilterThatOutputsTheRequestsThreadID</url-pattern>
   </filter-mapping>
 
 </web-app>

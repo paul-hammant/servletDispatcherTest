@@ -21,61 +21,47 @@ Then to run Tomcat:
     cd apache-tomcat-7.0.41/bin
 	./catalina.sh run
 
-## URLs that work
+## Single Context tests
 
-[http://localhost:8080/a/IOutputMyThreadID](http://localhost:8080/a/IOutputMyThreadID)
+Filter invocation [http://localhost:8080/a/AFilterThatOutputsTheRequestsThreadID](http://localhost:8080/a/AFilterThatOutputsTheRequestsThreadID):
 
-Should output something like:
+Outputs something like:
 
-    A thread = 1229912610
+    /a/AFilterThatOutputsTheRequestsThreadID: thread = 320938030
 
-[http://localhost:8080/b/IAlsoOutputMyThreadID](http://localhost:8080/b/IAlsoOutputMyThreadID)
+Filter invocation [http://localhost:8080/b/AnotherFilterThatOutputsTheRequestsThreadID](http://localhost:8080/b/AnotherFilterThatOutputsTheRequestsThreadID):
 
-Should output something like:
+Outputs something like:
 
-    B thread = 1229912610
+    /b/AnotherFilterThatOutputsTheRequestsThreadID: thread = 2065966604
 
-## What is not working :-(
+Servlet invocation [http://localhost:8080/b/AServletThatOutputsTheRequestsThreadID](http://localhost:8080/b/AServletThatOutputsTheRequestsThreadID):
 
-[http://localhost:8080/a/AIncludingContentFromB](http://localhost:8080/a/AIncludingContentFromB)
+Outputs something like:
 
-Should output something like:
+    /b/AServletThatOutputsTheRequestsThreadID: thread = 2065966604
 
-    A thread = 1229912610
-    B thread = 1229912610
+## Cross context tests
 
-If **after** patching context.xml, it **unexpectedly** outputs:
+Including content from a static resource works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=foo.txt](http://localhost:8080/a/AIncludingContentFromB?bURL=foo.txt) :
 
-    HTTP Status 500 - The requested resource (/b/IAlsoOutputMyThreadID) is not available
-    
-    type Exception report
-    
-    message The requested resource (/b/IAlsoOutputMyThreadID) is not available
-    
-    description The server encountered an internal error that prevented it from fulfilling this request.
-    
-    exception
-    
-    java.io.FileNotFoundException: The requested resource (/b/IAlsoOutputMyThreadID) is not available
-    	org.apache.catalina.servlets.DefaultServlet.serveResource(DefaultServlet.java:776)
-    	org.apache.catalina.servlets.DefaultServlet.doGet(DefaultServlet.java:411)
-    	javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
-    	javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
-    	servletDispatcherTest.AIncludingContentFromB.doFilter(AIncludingContentFromB.java:25)
-    note The full stack trace of the root cause is available in the Apache Tomcat/7.0.41 logs.
-	
-That is the bug I think (or my misunderstanding). If you run it **before** patching (modifying) the context.xml, **as expected** it spits out:
+Outputs something like:
 
-    HTTP Status 500 -
-    
-    type Exception report
-    
-    message
-    
-    description The server encountered an internal error that prevented it from fulfilling this request.
-    
-    exception
-    
-    java.lang.NullPointerException
-    	servletDispatcherTest.AIncludingContentFromB.doFilter(AIncludingContentFromB.java:23)
-    note The full stack trace of the root cause is available in the Apache Tomcat/7.0.41 logs.
+    /a/AFilterThatOutputsTheRequestsThreadID: thread = 1856114434
+    /b/foo.txt: contents of static file
+
+Including content from a servlet works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID](http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID):
+
+Outputs something like:
+
+    /a/AFilterThatOutputsTheRequestsThreadID: thread = 1062493000
+    /b/AServletThatOutputsTheRequestsThreadID: thread = 1062493000
+
+**Note you have to set context.xml to have a line like so (the patch_contextXml.sh script does this for you)**
+
+Filter invocation in 'a' including content from a filter in 'b' [http://localhost:8080/a/AIncludingContentFromB?bURL=AnotherFilterThatOutputsTheRequestsThreadID](http://localhost:8080/a/AIncludingContentFromB?bURL=AnotherFilterThatOutputsTheRequestsThreadID)
+
+Outputs something like:
+
+    /a/AFilterThatOutputsTheRequestsThreadID: thread = 1062493000
+    /b/AnotherFilterThatOutputsTheRequestsThreadID: thread = 1062493000

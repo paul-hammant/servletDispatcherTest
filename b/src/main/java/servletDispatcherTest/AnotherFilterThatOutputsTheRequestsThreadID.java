@@ -8,7 +8,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
 
-public class IAlsoOutputMyThreadID implements Filter {
+public class AnotherFilterThatOutputsTheRequestsThreadID implements Filter {
 
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -16,7 +16,7 @@ public class IAlsoOutputMyThreadID implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        response.getWriter().write("B thread = " + System.identityHashCode(Thread.currentThread()));
+        response.getWriter().write("/b/AnotherFilterThatOutputsTheRequestsThreadID: thread = " + System.identityHashCode(Thread.currentThread()));
 
     }
 
