@@ -9,7 +9,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public class AIncludingContentFromB extends A {
+public class AIncludingContentFromB
+        extends IOutputMyThreadID {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -19,7 +20,7 @@ public class AIncludingContentFromB extends A {
 
         ServletContext context = servletRequest.getSession().getServletContext().getContext("/b");
 
-        RequestDispatcher requestDispatcher = context.getRequestDispatcher("/anything");
+        RequestDispatcher requestDispatcher = context.getRequestDispatcher("/IAlsoOutputMyThreadID");
 
         requestDispatcher.include(request, response);
 

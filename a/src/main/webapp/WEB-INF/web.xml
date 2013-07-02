@@ -7,7 +7,7 @@
 
   <filter>
     <filter-name>aFilter</filter-name>
-    <filter-class>servletDispatcherTest.A</filter-class>
+    <filter-class>servletDispatcherTest.IOutputMyThreadID</filter-class>
   </filter>
 
   <filter>
@@ -17,12 +17,12 @@
 
   <filter-mapping>
     <filter-name>aOverrideFilter</filter-name>
-    <url-pattern>AIncludingContentFromB</url-pattern>
+    <url-pattern>/AIncludingContentFromB</url-pattern>
   </filter-mapping>
 
   <filter-mapping>
     <filter-name>aFilter</filter-name>
-    <url-pattern>A</url-pattern>
+    <url-pattern>/IOutputMyThreadID</url-pattern>
   </filter-mapping>
 
 </web-app>

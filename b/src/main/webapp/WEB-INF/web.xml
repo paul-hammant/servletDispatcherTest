@@ -7,12 +7,12 @@
 
    <filter>
         <filter-name>bFilter</filter-name>
-        <filter-class>servletDispatcherTest.B</filter-class>
+        <filter-class>servletDispatcherTest.IAlsoOutputMyThreadID</filter-class>
     </filter>
 
   	<filter-mapping>
 		<filter-name>bFilter</filter-name>
-        <url-pattern>*</url-pattern>
+        <url-pattern>/IAlsoOutputMyThreadID</url-pattern>
 	</filter-mapping>
 
 </web-app>
