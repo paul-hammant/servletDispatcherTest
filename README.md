@@ -21,7 +21,7 @@ Then to run Tomcat:
     cd apache-tomcat-7.0.41/bin
 	./catalina.sh run
 
-## URLs to test with
+## URLs that work
 
 [http://localhost:8080/a/IOutputMyThreadID](http://localhost:8080/a/IOutputMyThreadID)
 
@@ -35,28 +35,14 @@ Should output something like:
 
     B thread = 1229912610
 
+## What is not working :-(
+
 [http://localhost:8080/a/AIncludingContentFromB](http://localhost:8080/a/AIncludingContentFromB)
 
 Should output something like:
 
     A thread = 1229912610
     B thread = 1229912610
-
-If you run it before patching (modifying) the context.xml, **as expected** it spits out:
-
-    HTTP Status 500 -
-    
-    type Exception report
-    
-    message
-    
-    description The server encountered an internal error that prevented it from fulfilling this request.
-    
-    exception
-    
-    java.lang.NullPointerException
-    	servletDispatcherTest.AIncludingContentFromB.doFilter(AIncludingContentFromB.java:23)
-    note The full stack trace of the root cause is available in the Apache Tomcat/7.0.41 logs.
 
 If **after** patching context.xml, it **unexpectedly** outputs:
 
@@ -76,4 +62,20 @@ If **after** patching context.xml, it **unexpectedly** outputs:
     	javax.servlet.http.HttpServlet.service(HttpServlet.java:621)
     	javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
     	servletDispatcherTest.AIncludingContentFromB.doFilter(AIncludingContentFromB.java:25)
+    note The full stack trace of the root cause is available in the Apache Tomcat/7.0.41 logs.
+	
+That is the bug I think (or my misunderstanding). If you run it **before** patching (modifying) the context.xml, **as expected** it spits out:
+
+    HTTP Status 500 -
+    
+    type Exception report
+    
+    message
+    
+    description The server encountered an internal error that prevented it from fulfilling this request.
+    
+    exception
+    
+    java.lang.NullPointerException
+    	servletDispatcherTest.AIncludingContentFromB.doFilter(AIncludingContentFromB.java:23)
     note The full stack trace of the root cause is available in the Apache Tomcat/7.0.41 logs.
