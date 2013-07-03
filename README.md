@@ -23,25 +23,25 @@ Then to run Tomcat:
 
 ## Single Context tests
 
-1. Filter invocation [http://localhost:8080/a/AFilterThatOutputsTheRequestsThreadID](http://localhost:8080/a/AFilterThatOutputsTheRequestsThreadID):
+1) Filter invocation [http://localhost:8080/a/AFilterThatOutputsTheRequestsThreadID](http://localhost:8080/a/AFilterThatOutputsTheRequestsThreadID):
 
 Outputs something like:
 
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 320938030
 
-2. Filter invocation [http://localhost:8080/b/AnotherFilterThatOutputsTheRequestsThreadID](http://localhost:8080/b/AnotherFilterThatOutputsTheRequestsThreadID):
+2) Filter invocation [http://localhost:8080/b/AnotherFilterThatOutputsTheRequestsThreadID](http://localhost:8080/b/AnotherFilterThatOutputsTheRequestsThreadID):
 
 Outputs something like:
 
     /b/AnotherFilterThatOutputsTheRequestsThreadID: thread = 2065966604
 
-3. Servlet invocation [http://localhost:8080/b/AServletThatOutputsTheRequestsThreadID](http://localhost:8080/b/AServletThatOutputsTheRequestsThreadID):
+3) Servlet invocation [http://localhost:8080/b/AServletThatOutputsTheRequestsThreadID](http://localhost:8080/b/AServletThatOutputsTheRequestsThreadID):
 
 Outputs something like:
 
     /b/AServletThatOutputsTheRequestsThreadID: thread = 2065966604
 
-4. Static Resource [http://localhost:8080/b/foo.txt](http://localhost:8080/b/foo.txt):
+4) Static Resource [http://localhost:8080/b/foo.txt](http://localhost:8080/b/foo.txt):
 
 Outputs something like:
 
@@ -49,14 +49,14 @@ Outputs something like:
 
 ## Cross context tests
 
-1. Including content from a static resource works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=foo.txt](http://localhost:8080/a/AIncludingContentFromB?bURL=foo.txt) :
+1) Including content from a static resource works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=foo.txt](http://localhost:8080/a/AIncludingContentFromB?bURL=foo.txt) :
 
 Outputs something like:
 
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 1856114434
     /b/foo.txt: contents of static file
 
-2. Including content from a servlet works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID](http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID):
+2) Including content from a servlet works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID](http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID):
 
 Outputs something like:
 
@@ -65,7 +65,7 @@ Outputs something like:
 
 **Note you have to set context.xml to have a line like so (the patch_contextXml.sh script does this for you)**
 
-3. Filter invocation in 'a' including content from a filter in 'b' [http://localhost:8080/a/AIncludingContentFromB?bURL=AnotherFilterThatOutputsTheRequestsThreadID](http://localhost:8080/a/AIncludingContentFromB?bURL=AnotherFilterThatOutputsTheRequestsThreadID)
+3) Filter invocation in 'a' including content from a filter in 'b' [http://localhost:8080/a/AIncludingContentFromB?bURL=AnotherFilterThatOutputsTheRequestsThreadID](http://localhost:8080/a/AIncludingContentFromB?bURL=AnotherFilterThatOutputsTheRequestsThreadID)
 
 Outputs something like:
 
@@ -73,7 +73,7 @@ Outputs something like:
     /b/AnotherFilterThatOutputsTheRequestsThreadID: thread = 1062493000
 	
 
-4. Including content from a servlet (AS WELL AS EXTRACTING & WRAPPING IT) works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID&extractPayload=true](http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID&extractPayload=true)
+4) Including content from a servlet (AS WELL AS EXTRACTING & WRAPPING IT) works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID&extractPayload=true](http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID&extractPayload=true)
 
 Output looks like:
 
