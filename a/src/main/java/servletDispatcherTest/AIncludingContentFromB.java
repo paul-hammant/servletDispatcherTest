@@ -23,113 +23,131 @@ public class AIncludingContentFromB
         super.doFilter(request, response, chain);
 
         String bURL = request.getParameter("bURL");
+        boolean extractPayload = "true".equals(request.getParameter("extractPayload"));
 
         if (bURL == null) {
             response.getWriter().write("** you need to specify a bURL query string parameter **");
-
         } else {
-
-
             HttpServletRequest servletRequest = (HttpServletRequest) request;
             ServletContext context = servletRequest.getSession().getServletContext().getContext("/b");
             RequestDispatcher requestDispatcher = context.getRequestDispatcher("/" + bURL);
 
-            requestDispatcher.include(request, response);
-
-            //MyHttpServletResponse newResponse = new MyHttpServletResponse();
-            //requestDispatcher.include(request, newResponse);
-            //response.getWriter().write(">>" + newResponse.baos.toString() + "<<");
+            if (!extractPayload) {
+                requestDispatcher.include(request, response);
+            } else {
+                MyHttpServletResponse newResponse = new MyHttpServletResponse((HttpServletResponse) response);
+                requestDispatcher.include(request, newResponse);
+                response.getWriter().write("Extracted from temp response, and rewritten: [ " + newResponse.baos.toString() + " ]");
+            }
 
         }
-
-
     }
 
     private static class MyHttpServletResponse implements HttpServletResponse {
+
+        private HttpServletResponse original;
+        private String contentType;
+        private int contentLen;
+        private Locale locale;
 
         private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         private final ServletOutputStream saos = new ServletOutputStream() {
             @Override
             public void write(int b) throws IOException {
                 baos.write(b);
+                flush();
             }
         };
-        private final PrintWriter writer = new PrintWriter(baos);
+
+        private final PrintWriter writer = new PrintWriter(baos) {
+            @Override
+            public void write(String s) {
+                super.write(s);
+                flush();
+            }
+        };
+
+        private MyHttpServletResponse(HttpServletResponse original) {
+            this.original = original;
+        }
 
         public void addCookie(Cookie cookie) {
 
         }
 
         public boolean containsHeader(String name) {
-            return false;
+            return original.containsHeader(name);
         }
 
         public String encodeURL(String url) {
-            return null;
+            return original.encodeURL(url);
         }
 
         public String encodeRedirectURL(String url) {
-            return null;
+            return original.encodeRedirectURL(url);
         }
 
         public String encodeUrl(String url) {
-            return null;
+            return original.encodeUrl(url);
         }
 
         public String encodeRedirectUrl(String url) {
-            return null;
+            return encodeRedirectUrl(url);
         }
 
         public void sendError(int sc, String msg) throws IOException {
+            original.sendError(sc, msg);
 
         }
 
         public void sendError(int sc) throws IOException {
+            original.sendError(sc);
 
         }
 
         public void sendRedirect(String location) throws IOException {
-
+            original.sendRedirect(location);
         }
 
         public void setDateHeader(String name, long date) {
-
+            original.setDateHeader(name, date);
         }
 
         public void addDateHeader(String name, long date) {
+            original.addDateHeader(name, date);
 
         }
 
         public void setHeader(String name, String value) {
-
+            original.setHeader(name, value);
         }
 
         public void addHeader(String name, String value) {
-
+            original.addHeader(name, value);
         }
 
         public void setIntHeader(String name, int value) {
-
+            original.setIntHeader(name, value);
         }
 
         public void addIntHeader(String name, int value) {
-
+            original.addIntHeader(name, value);
         }
 
         public void setStatus(int sc) {
-
+            original.setStatus(sc);
         }
 
         public void setStatus(int sc, String sm) {
-
+            original.setStatus(sc);
         }
 
         public String getCharacterEncoding() {
-            return null;
+            return original.getCharacterEncoding();
         }
 
         public String getContentType() {
-            return null;
+            return original.getContentType();
         }
 
         public ServletOutputStream getOutputStream() throws IOException {
@@ -141,19 +159,18 @@ public class AIncludingContentFromB
         }
 
         public void setCharacterEncoding(String charset) {
-
+            original.setCharacterEncoding(charset);
         }
 
         public void setContentLength(int len) {
-
+            contentLen = len;
         }
 
         public void setContentType(String type) {
-
+            contentType = type;
         }
 
         public void setBufferSize(int size) {
-
         }
 
         public int getBufferSize() {
@@ -177,11 +194,11 @@ public class AIncludingContentFromB
         }
 
         public void setLocale(Locale loc) {
-
+            locale = loc;
         }
 
         public Locale getLocale() {
-            return null;
+            return locale;
         }
     }
 }

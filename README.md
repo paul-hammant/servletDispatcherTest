@@ -72,5 +72,27 @@ Outputs something like:
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 1062493000
     /b/AnotherFilterThatOutputsTheRequestsThreadID: thread = 1062493000
 	
+	
+Including content from a servlet (AS WELL AS EXTRACTING & WRAPPING IT) works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID&extractPayload=true](http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID&extractPayload=true)
+
+Output looks like:
+
+    /a/AFilterThatOutputsTheRequestsThreadID: thread = 1834288185
+    Extracted from temp response, and rewritten: [ /b/AServletThatOutputsTheRequestsThreadID: thread = 1834288185 ]
+	
+## Important Source Files
+
+1. [a/pom.xml](a/pom.xml)
+2. [a/src/main/java/servletDispatcherTest/AFilterThatOutputsTheRequestsThreadID.java](a/src/main/java/servletDispatcherTest/AFilterThatOutputsTheRequestsThreadID.java) // this one bridges the two web-apps.
+3. [a/src/main/java/servletDispatcherTest/AIncludingContentFromB.java](a/src/main/java/servletDispatcherTest/AIncludingContentFromB.java)
+4. [a/src/main/webapp/WEB-INF/web.xml](a/src/main/webapp/WEB-INF/web.xml)
+5. [b/pom.xml](b/pom.xml)
+6. [b/src/main/java/servletDispatcherTest/AnotherFilterThatOutputsTheRequestsThreadID.java](b/src/main/java/servletDispatcherTest/AnotherFilterThatOutputsTheRequestsThreadID.java)
+7. [b/src/main/java/servletDispatcherTest/AServletThatOutputsTheRequestsThreadID.java](b/src/main/java/servletDispatcherTest/AServletThatOutputsTheRequestsThreadID.java)
+8. [b/src/main/webapp/foo.txt](b/src/main/webapp/foo.txt)
+9. [b/src/main/webapp/WEB-INF/web.xml](b/src/main/webapp/WEB-INF/web.xml)
+	
+## Summary	
+
 The important take away is that the servlet container uses the same thread for handing invocation in both contexts.  
 You won't lower your concurrent request capacity by coding something like this, for a single Tomcat. This works in Tomcat 6 & 7 (maybe others). It also works in Jetty 9 (maybe others)
