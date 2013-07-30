@@ -28,18 +28,21 @@ Then to run Tomcat:
 Outputs something like:
 
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 320938030
+    /a/AFilterThatOutputsTheRequestsThreadID: JSESSIONID = 5325BFA50C2B58C1740522DC4F12C894
 
 2) Filter invocation [http://localhost:8080/b/AnotherFilterThatOutputsTheRequestsThreadID](http://localhost:8080/b/AnotherFilterThatOutputsTheRequestsThreadID):
 
 Outputs something like:
 
     /b/AnotherFilterThatOutputsTheRequestsThreadID: thread = 2065966604
+    /b/AnotherFilterThatOutputsTheRequestsThreadID: JSESSIONID = 5325BFA50C2B58C1740522DC4F12C894
 
 3) Servlet invocation [http://localhost:8080/b/AServletThatOutputsTheRequestsThreadID](http://localhost:8080/b/AServletThatOutputsTheRequestsThreadID):
 
 Outputs something like:
 
     /b/AServletThatOutputsTheRequestsThreadID: thread = 2065966604
+    /b/AServletThatOutputsTheRequestsThreadID: JSESSIONID = 83A3784E855229691048531FCA608A60
 
 4) Static Resource [http://localhost:8080/b/foo.txt](http://localhost:8080/b/foo.txt):
 
@@ -54,6 +57,7 @@ Outputs something like:
 Outputs something like:
 
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 1856114434
+    /a/AFilterThatOutputsTheRequestsThreadID: JSESSIONID = 5325BFA50C2B58C1740522DC4F12C894	
     /b/foo.txt: contents of static file
 
 2) Including content from a servlet works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID](http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID):
@@ -61,7 +65,9 @@ Outputs something like:
 Outputs something like:
 
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 1062493000
+    /a/AFilterThatOutputsTheRequestsThreadID: JSESSIONID = 5325BFA50C2B58C1740522DC4F12C894
     /b/AServletThatOutputsTheRequestsThreadID: thread = 1062493000
+    /b/AServletThatOutputsTheRequestsThreadID: JSESSIONID = 5325BFA50C2B58C1740522DC4F12C894
 
 **Note you have to set context.xml to have a line like so (the patch_contextXml.sh script does this for you)**
 
@@ -70,15 +76,21 @@ Outputs something like:
 Outputs something like:
 
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 1062493000
+    /a/AFilterThatOutputsTheRequestsThreadID: JSESSIONID = 5325BFA50C2B58C1740522DC4F12C894
     /b/AnotherFilterThatOutputsTheRequestsThreadID: thread = 1062493000
+    /b/AnotherFilterThatOutputsTheRequestsThreadID: JSESSIONID = 5325BFA50C2B58C1740522DC4F12C894
 	
 
 4) Including content from a servlet (AS WELL AS EXTRACTING & WRAPPING IT) works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID&extractPayload=true](http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID&extractPayload=true)
 
 Output looks like:
 
-    /a/AFilterThatOutputsTheRequestsThreadID: thread = 1834288185
-    Extracted from temp response, and rewritten: [ /b/AServletThatOutputsTheRequestsThreadID: thread = 1834288185 ]
+    /a/AFilterThatOutputsTheRequestsThreadID: thread = 1057098008
+    /a/AFilterThatOutputsTheRequestsThreadID: JSESSIONID = CECC8D800A0E32971DD578BC67A09F15
+    Extracted from temp response, and rewritten: [
+    /b/AServletThatOutputsTheRequestsThreadID: thread = 1057098008
+    /b/AServletThatOutputsTheRequestsThreadID: JSESSIONID = CECC8D800A0E32971DD578BC67A09F15
+    ]
 	
 ## Important Source Files
 

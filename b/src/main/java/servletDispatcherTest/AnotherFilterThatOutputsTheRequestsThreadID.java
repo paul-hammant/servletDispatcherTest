@@ -20,7 +20,7 @@ public class AnotherFilterThatOutputsTheRequestsThreadID implements Filter {
         response.getWriter().write("/b/AnotherFilterThatOutputsTheRequestsThreadID: thread = " + System.identityHashCode(Thread.currentThread()) + "\n");
         HttpServletRequest req = (HttpServletRequest) request;
         req.getSession(true);
-        response.getWriter().write("/a/AnotherFilterThatOutputsTheRequestsThreadID: JSESSIONID = " + req.getRequestedSessionId() + "\n");
+        response.getWriter().write("/b/AnotherFilterThatOutputsTheRequestsThreadID: JSESSIONID = " + req.getRequestedSessionId() + "\n");
 
 
     }

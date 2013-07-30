@@ -12,7 +12,7 @@ public class AServletThatOutputsTheRequestsThreadID extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.getWriter().write("/b/AServletThatOutputsTheRequestsThreadID: thread = " + System.identityHashCode(Thread.currentThread())+ "\n");
         req.getSession(true);
-        resp.getWriter().write("/a/AServletThatOutputsTheRequestsThreadID: JSESSIONID = " + req.getRequestedSessionId() + "\n");
+        resp.getWriter().write("/b/AServletThatOutputsTheRequestsThreadID: JSESSIONID = " + req.getRequestedSessionId() + "\n");
 
     }
 }
