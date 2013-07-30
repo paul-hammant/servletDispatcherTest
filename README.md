@@ -52,6 +52,8 @@ Outputs something like:
 
 ## Cross context tests
 
+Note that the JSESSIONIDs are the same for the 'a' and 'b' invocations (#2 through #4).
+
 1) Including content from a static resource works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=foo.txt](http://localhost:8080/a/AIncludingContentFromB?bURL=foo.txt) :
 
 Outputs something like:
@@ -86,10 +88,10 @@ Outputs something like:
 Output looks like:
 
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 1057098008
-    /a/AFilterThatOutputsTheRequestsThreadID: JSESSIONID = CECC8D800A0E32971DD578BC67A09F15
+    /a/AFilterThatOutputsTheRequestsThreadID: JSESSIONID = 5325BFA50C2B58C1740522DC4F12C894
     Extracted from temp response, and rewritten: [
     /b/AServletThatOutputsTheRequestsThreadID: thread = 1057098008
-    /b/AServletThatOutputsTheRequestsThreadID: JSESSIONID = CECC8D800A0E32971DD578BC67A09F15
+    /b/AServletThatOutputsTheRequestsThreadID: JSESSIONID = 5325BFA50C2B58C1740522DC4F12C894
     ]
 	
 ## Important Source Files
