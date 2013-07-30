@@ -37,7 +37,7 @@ public class AIncludingContentFromB
             } else {
                 MyHttpServletResponse newResponse = new MyHttpServletResponse((HttpServletResponse) response);
                 requestDispatcher.include(request, newResponse);
-                response.getWriter().write("Extracted from temp response, and rewritten: [ " + newResponse.baos.toString() + " ]");
+                response.getWriter().write("Extracted from temp response, and rewritten: [\n" + newResponse.baos.toString() + "]");
             }
 
         }
