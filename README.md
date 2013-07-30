@@ -21,7 +21,7 @@ Then to run Tomcat:
     cd apache-tomcat-7.0.41/bin
 	./catalina.sh run
 
-## Single Context tests
+## Single Context tests (What was '/b' is now root - '/')
 
 1) Filter invocation [http://localhost:8080/a/AFilterThatOutputsTheRequestsThreadID](http://localhost:8080/a/AFilterThatOutputsTheRequestsThreadID):
 
@@ -29,23 +29,23 @@ Outputs something like:
 
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 320938030
 
-2) Filter invocation [http://localhost:8080/b/AnotherFilterThatOutputsTheRequestsThreadID](http://localhost:8080/b/AnotherFilterThatOutputsTheRequestsThreadID):
+2) Filter invocation [http://localhost:8080/AnotherFilterThatOutputsTheRequestsThreadID](http://localhost:8080/AnotherFilterThatOutputsTheRequestsThreadID):
 
 Outputs something like:
 
-    /b/AnotherFilterThatOutputsTheRequestsThreadID: thread = 2065966604
+    /AnotherFilterThatOutputsTheRequestsThreadID: thread = 2065966604
 
-3) Servlet invocation [http://localhost:8080/b/AServletThatOutputsTheRequestsThreadID](http://localhost:8080/b/AServletThatOutputsTheRequestsThreadID):
-
-Outputs something like:
-
-    /b/AServletThatOutputsTheRequestsThreadID: thread = 2065966604
-
-4) Static Resource [http://localhost:8080/b/foo.txt](http://localhost:8080/b/foo.txt):
+3) Servlet invocation [http://localhost:8080/AServletThatOutputsTheRequestsThreadID](http://localhost:8080/AServletThatOutputsTheRequestsThreadID):
 
 Outputs something like:
 
-    /b/foo.txt: contents of static file
+    /AServletThatOutputsTheRequestsThreadID: thread = 2065966604
+
+4) Static Resource [http://localhost:8080/foo.txt](http://localhost:8080/foo.txt):
+
+Outputs something like:
+
+    /foo.txt: contents of static file
 
 ## Cross context tests
 
@@ -54,14 +54,14 @@ Outputs something like:
 Outputs something like:
 
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 1856114434
-    /b/foo.txt: contents of static file
+    /foo.txt: contents of static file
 
 2) Including content from a servlet works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID](http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID):
 
 Outputs something like:
 
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 1062493000
-    /b/AServletThatOutputsTheRequestsThreadID: thread = 1062493000
+    /AServletThatOutputsTheRequestsThreadID: thread = 1062493000
 
 **Note you have to set context.xml to have a line like so (the patch_contextXml.sh script does this for you)**
 
@@ -70,7 +70,7 @@ Outputs something like:
 Outputs something like:
 
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 1062493000
-    /b/AnotherFilterThatOutputsTheRequestsThreadID: thread = 1062493000
+    /AnotherFilterThatOutputsTheRequestsThreadID: thread = 1062493000
 	
 
 4) Including content from a servlet (AS WELL AS EXTRACTING & WRAPPING IT) works fine [http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID&extractPayload=true](http://localhost:8080/a/AIncludingContentFromB?bURL=AServletThatOutputsTheRequestsThreadID&extractPayload=true)
@@ -78,7 +78,7 @@ Outputs something like:
 Output looks like:
 
     /a/AFilterThatOutputsTheRequestsThreadID: thread = 1834288185
-    Extracted from temp response, and rewritten: [ /b/AServletThatOutputsTheRequestsThreadID: thread = 1834288185 ]
+    Extracted from temp response, and rewritten: [ /AServletThatOutputsTheRequestsThreadID: thread = 1834288185 ]
 	
 ## Important Source Files
 

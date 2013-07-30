@@ -29,7 +29,7 @@ public class AIncludingContentFromB
             response.getWriter().write("** you need to specify a bURL query string parameter **");
         } else {
             HttpServletRequest servletRequest = (HttpServletRequest) request;
-            ServletContext context = servletRequest.getSession().getServletContext().getContext("/b");
+            ServletContext context = servletRequest.getSession().getServletContext().getContext("/");
             RequestDispatcher requestDispatcher = context.getRequestDispatcher("/" + bURL);
 
             if (!extractPayload) {
